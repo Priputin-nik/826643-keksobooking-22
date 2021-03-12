@@ -63,6 +63,7 @@ let offerGeneration = {
   address: 'location.' + locationGeneration.x + ', ' + 'location.' +locationGeneration.y,
   price: getNumber(1, 1e9, 0),
   type: FOR_TYPE_MAPS[getNumber(1, 4, 0)],
+  rooms: getNumber(1, 1e9, 0),
   guests: getNumber(1, 1e9, 0),
   checkin: FOR_CHECK_IN [getNumber(1, 3, 0)],
   checkout: FOR_CHECK_IN [getNumber(1, 3, 0)],
