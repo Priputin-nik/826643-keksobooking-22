@@ -9,18 +9,19 @@ const getNumber = function(min, max, timeSign) {
   }
   return Number(randomNumber.toFixed(timeSign));
 };
-let FORTYPEMAPS = {
+
+const FOR_TYPE_MAPS = {
   1: 'palace',
   2: 'flat',
   3: 'house',
   4: 'bungalow',
 };
-let FORCHECKIN = {
+const FOR_CHECK_IN = {
   1: '12:00',
   2: '13:00',
   3: '14:00',
 };
-let forFeatures = [
+const FOR_FEATURES = [
   'wifi',
   'dishwasher',
   'parking',
@@ -28,45 +29,60 @@ let forFeatures = [
   'elevator',
   'conditioner',
 ];
-let AUTHOR = {
+let getMixObject = function() {
+let authorGeneration = {
   avatar: 'img/avatars/user'+'0'+getNumber(1, 8, 0)+'.png',
 };
-// для получения массива случайной длины из featuresArr с условием неповторения значений используем целиком forFeatures, перемешаем его, а затем возьмем нужное количество первых элементов
-let featuresArr = new Array();
-let getMix = function (array) {
+// для получения массива случайной длины из featuresSets с условием неповторения значений используем целиком forFeatures, перемешаем его, а затем возьмем нужное количество первых элементов
+let featuresSets = new Array();
+const getMix = function (array) {
   return array.sort(() => Math.random() - 0.5);
 }
-let fullFeaturesArr = getMix(forFeatures);
+let fillFeaturesSets = getMix(FOR_FEATURES);
 for (let i = 1; i <=  getNumber(1, 5, 0); i++) {
-  featuresArr.push(fullFeaturesArr[i]);
+  featuresSets.push(fillFeaturesSets[i]);
 }
-let photosArr = new Array();
-// Определим длину массива для photos, ограничим его: от 1 до 5 значений
-
-for (let i = 1; i <=  getNumber(1, 5, 0); i++) {
-  photosArr.push('http://o0.github.io/assets/images/tokyo/hotel'+i+'.jpg');
-
+// массив для индексов, которые будут прибавляться к ссылке фотографий
+let photosIndex = new Array();
+let photosSets = new Array();
+for (let k = 1; k <=8; k++) {
+  photosIndex.push(k);
 }
+// перемешаем индексы
+let mixIndex = getMix(photosIndex);
+for (let i = 1; i <=  getNumber(1, 8, 0); i++) {
+  photosSets.push('http://o0.github.io/assets/images/tokyo/hotel'+photosIndex[i]+'.jpg');
 
-let OFFER = {
-  title: 'Предложение',
-  address: 'location.' + getNumber(35.65000, 35.70000, 5) + ', ' + 'location.' + getNumber(139.70000, 139.80000, 5),
-  price: getNumber(1, 1e9, 0),
-  type: FORTYPEMAPS[getNumber(1, 4, 0)],
-  guests: getNumber(1, 1e9, 0),
-  checkin: FORCHECKIN [getNumber(1, 4, 0)],
-  checkout: FORCHECKIN [getNumber(1, 4, 0)],
-  features: featuresArr,
-  description: 'Солнечно и просторно',
-  photos: photosArr,
 };
-let LOCATION = {
+let locationGeneration = {
   x: getNumber(35.65000, 35.70000, 5),
   y: getNumber(139.70000, 139.80000, 5),
 };
-let endlessArr = new Array (10);
-endlessArr.fill(null);
-for (let j = 0; j <= endlessArr.length - 1; j++) {
-  endlessArr[j] = Object.assign({}, AUTHOR, OFFER, LOCATION);
+let offerGeneration = {
+  title: 'Предложение',
+  address: 'location.' + locationGeneration.x + ', ' + 'location.' +locationGeneration.y,
+  price: getNumber(1, 1e9, 0),
+  type: FOR_TYPE_MAPS[getNumber(1, 4, 0)],
+  guests: getNumber(1, 1e9, 0),
+  checkin: FOR_CHECK_IN [getNumber(1, 3, 0)],
+  checkout: FOR_CHECK_IN [getNumber(1, 3, 0)],
+  features: featuresSets,
+  description: 'Солнечно и просторно',
+  photos: photosSets,
+};
+  let newObject = {
+    author: authorGeneration,
+    location: locationGeneration,
+    offer: offerGeneration,
+  }
+
+  return newObject;
 }
-console.log(endlessArr);
+
+let endlessSets = new Array (10);
+endlessSets.fill(null);
+for (let j = 0; j <= endlessSets.length - 1; j++) {
+  endlessSets[j] = getMixObject();
+
+}
+console.log(endlessSets);
